@@ -1,0 +1,235 @@
+/* Augment 自动注册扩展样式 */
+
+#augment-auto-panel {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  width: 350px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+  z-index: 10000 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  overflow: hidden !important;
+}
+
+#augment-auto-panel * {
+  box-sizing: border-box !important;
+}
+
+#augment-auto-panel .auto-panel-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  padding: 15px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+#augment-auto-panel .auto-panel-content {
+  padding: 15px !important;
+}
+
+#augment-auto-panel .auto-status-item {
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+#augment-auto-panel .auto-status-success {
+  background: #d4edda !important;
+  color: #155724 !important;
+}
+
+#augment-auto-panel .auto-status-error {
+  background: #f8d7da !important;
+  color: #721c24 !important;
+}
+
+#augment-auto-panel .auto-status-info {
+  background: #d1ecf1 !important;
+  color: #0c5460 !important;
+}
+
+#augment-auto-panel .auto-status-warning {
+  background: #fff3cd !important;
+  color: #856404 !important;
+}
+
+#augment-auto-panel .auto-email-display {
+  background: #f8f9fa !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
+  font-family: monospace !important;
+  font-size: 12px !important;
+  word-break: break-all !important;
+  margin: 10px 0 !important;
+  border: 1px solid #e9ecef !important;
+}
+
+#augment-auto-panel .auto-progress-bar {
+  width: 100% !important;
+  height: 6px !important;
+  background: #e9ecef !important;
+  border-radius: 3px !important;
+  overflow: hidden !important;
+  margin: 10px 0 !important;
+}
+
+#augment-auto-panel .auto-progress-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #667eea, #764ba2) !important;
+  border-radius: 3px !important;
+  transition: width 0.3s ease !important;
+}
+
+#augment-auto-panel .auto-action-buttons {
+  display: flex !important;
+  gap: 8px !important;
+  margin-top: 15px !important;
+}
+
+#augment-auto-panel .auto-btn {
+  flex: 1 !important;
+  padding: 12px 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+#augment-auto-panel .auto-btn::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  ) !important;
+  border-radius: inherit !important;
+  pointer-events: none !important;
+}
+
+#augment-auto-panel .auto-btn-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.8) 0%,
+    rgba(118, 75, 162, 0.8) 100%
+  ) !important;
+  color: white !important;
+  border-color: rgba(102, 126, 234, 0.4) !important;
+}
+
+#augment-auto-panel .auto-btn-primary:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.9) 0%,
+    rgba(118, 75, 162, 0.9) 100%
+  ) !important;
+  border-color: rgba(102, 126, 234, 0.6) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+#augment-auto-panel .auto-btn-primary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+#augment-auto-panel .auto-btn-primary:disabled {
+  background: linear-gradient(
+    135deg,
+    rgba(108, 117, 125, 0.6) 0%,
+    rgba(108, 117, 125, 0.6) 100%
+  ) !important;
+  border-color: rgba(108, 117, 125, 0.3) !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+#augment-auto-panel .auto-btn-secondary {
+  background: linear-gradient(
+    135deg,
+    rgba(108, 117, 125, 0.7) 0%,
+    rgba(84, 91, 98, 0.7) 100%
+  ) !important;
+  color: white !important;
+  border-color: rgba(108, 117, 125, 0.4) !important;
+}
+
+#augment-auto-panel .auto-btn-secondary:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(108, 117, 125, 0.8) 0%,
+    rgba(84, 91, 98, 0.8) 100%
+  ) !important;
+  border-color: rgba(108, 117, 125, 0.6) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+#augment-auto-panel .auto-btn-secondary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+#augment-auto-panel .auto-minimize-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  padding: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+#augment-auto-panel .auto-minimize-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+#augment-auto-panel .auto-minimize-btn:active {
+  transform: scale(0.95) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}

@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Augment 全自动注册助手",
+  "version": "2.1.0",
+  "description": "一键完成 Augment 官网自动注册流程，支持Gmail别名和临时邮箱双重方案，使用腾讯云函数获取验证码",
+  "icons": {
+    "16": "static/clown.png",
+    "32": "static/clown.png",
+    "48": "static/clown.png",
+    "128": "static/clown.png"
+  },
+  "permissions": ["activeTab", "storage", "scripting"],
+  "host_permissions": [
+    "https://augmentcode.com/*",
+    "https://*.augmentcode.com/*",
+    "https://api.mail.tm/*",
+    "https://*.tencentscf.com/*",
+    "https://*.scf.tencentcs.com/*",
+    "https://*.ap-guangzhou.tencentscf.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://augmentcode.com/*",
+        "https://*.augmentcode.com/*",
+        "http://localhost:8080/*"
+      ],
+      "js": [
+        "config.js",
+        "modules/storage.js",
+        "modules/email-generator.js",
+        "modules/verification-code.js",
+        "content.js"
+      ],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "action": {
+    "default_title": "Augment 自动注册",
+    "default_icon": "static/clown.png",
+    "default_popup": "popup.html"
+  }
+}

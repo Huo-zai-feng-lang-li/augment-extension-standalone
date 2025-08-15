@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Augment扩展配置助手</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Noto Sans SC", sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(rgba(0, 20, 40, 0.85), rgba(0, 30, 60, 0.9)),
+          url("https://public.youware.com/users-website-assets/prod/ac5437c5-e6ab-47d9-bc64-f72a0b6222a1/06eb89e5c8d443e7a391be03a1a00965.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* 动态背景粒子效果 */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(0, 191, 255, 0.15);
+        border-radius: 50%;
+        animation: float 20s infinite ease-in-out;
+        box-shadow: 0 0 5px rgba(0, 191, 255, 0.2);
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+          opacity: 0.3;
+        }
+        33% {
+          transform: translateY(-30px) rotate(120deg);
+          opacity: 0.6;
+        }
+        66% {
+          transform: translateY(30px) rotate(240deg);
+          opacity: 0.3;
+        }
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .glass-card {
+        background: rgba(0, 30, 60, 0.3);
+        border-radius: 25px;
+        padding: 40px;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(0, 150, 255, 0.3);
+        box-shadow: 0 25px 50px rgba(0, 100, 200, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        box-shadow: 0 25px 50px rgba(0, 150, 255, 0.2);
+        border-color: rgba(0, 150, 255, 0.4);
+      }
+
+      /* 移除上滑动画 */
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-size: 3.2em;
+        font-weight: 700;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #00bfff, #40e0d0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+        animation: titleGlow 3s ease-in-out infinite alternate;
+      }
+
+      @keyframes titleGlow {
+        from {
+          filter: brightness(1);
+        }
+        to {
+          filter: brightness(1.1);
+        }
+      }
+
+      .header .subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+        font-weight: 300;
+      }
+
+      .step {
+        margin-bottom: 35px;
+        padding: 30px;
+        background: rgba(0, 50, 100, 0.2);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 150, 255, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 移除流光效果 */
+
+      .step:hover {
+        background: rgba(0, 60, 100, 0.25);
+        border-color: rgba(0, 150, 255, 0.3);
+        box-shadow: 0 8px 20px rgba(0, 100, 200, 0.15);
+      }
+
+      .step h3 {
+        margin-bottom: 20px;
+        color: #00bfff;
+        font-size: 1.4em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+      }
+
+      .step-icon {
+        width: 35px;
+        height: 35px;
+        background: rgba(0, 191, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2em;
+        border: 1px solid rgba(0, 191, 255, 0.3);
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 12px;
+        font-weight: 600;
+        font-size: 1.1em;
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .input-container {
+        position: relative;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 18px 20px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 16px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .form-input:focus {
+        border-color: #00bfff;
+        box-shadow: 0 0 25px rgba(0, 191, 255, 0.4);
+        background: rgba(0, 150, 255, 0.1);
+      }
+
+      .form-input.valid {
+        border-color: #4caf50;
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+      }
+
+      .form-input.invalid {
+        border-color: #f44336;
+        box-shadow: 0 0 20px rgba(244, 67, 54, 0.3);
+      }
+
+      /* 移除抖动效果 */
+
+      .validation-message {
+        margin-top: 8px;
+        font-size: 0.9em;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2);
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .validation-message.show {
+        display: block;
+      }
+
+      .validation-message.success {
+        color: #4caf50;
+        background: rgba(76, 175, 80, 0.1);
+      }
+
+      .validation-message.error {
+        color: #f44336;
+        background: rgba(244, 67, 54, 0.1);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .buttons {
+        text-align: center;
+        margin: 40px 0;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        background: rgba(255, 255, 255, 0.9);
+        color: #667eea;
+        border: none;
+        padding: 18px 35px;
+        border-radius: 15px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 160px;
+        justify-content: center;
+      }
+
+      /* 移除按钮流光效果 */
+
+      .btn:hover {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 移除按钮按下效果 */
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #45a049, #4caf50);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .output {
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        white-space: pre-wrap;
+        max-height: 450px;
+        overflow-y: auto;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        position: relative;
+        display: none;
+      }
+
+      .output.show {
+        opacity: 1;
+        display: block;
+      }
+
+      .output::before {
+        content: "配置文件已生成 ✨";
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .instructions {
+        background: rgba(0, 50, 100, 0.2);
+        border-radius: 20px;
+        padding: 30px;
+        margin-top: 30px;
+        border: 1px solid rgba(0, 150, 255, 0.2);
+      }
+
+      .instructions h3 {
+        color: #00bfff;
+        margin-bottom: 20px;
+        font-size: 1.4em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+      }
+
+      .instructions ol {
+        list-style: none;
+        counter-reset: step-counter;
+      }
+
+      .instructions li {
+        counter-increment: step-counter;
+        margin-bottom: 15px;
+        padding-left: 40px;
+        position: relative;
+        line-height: 1.6;
+      }
+
+      .instructions li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #00bfff, #40e0d0);
+        color: #001122;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        box-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+      }
+
+      .code-highlight {
+        background: rgba(0, 191, 255, 0.1);
+        color: #00bfff;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+        border: 1px solid rgba(0, 191, 255, 0.2);
+      }
+
+      .success-message {
+        background: rgba(76, 175, 80, 0.1);
+        border: 1px solid rgba(76, 175, 80, 0.3);
+        color: #4caf50;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: none;
+        animation: slideInUp 0.5s ease;
+      }
+
+      .success-message.show {
+        display: block;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        margin-top: 20px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #00bfff, #40e0d0);
+        width: 0%;
+        transition: width 0.5s ease;
+        border-radius: 2px;
+        box-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
+        }
+
+        .glass-card {
+          padding: 25px;
+        }
+
+        .header h1 {
+          font-size: 2.5em;
+        }
+
+        .buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+
+      /* 自定义滚动条 */
+      .output::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .output::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+
+      .output::-webkit-scrollbar-thumb {
+        background: rgba(0, 191, 255, 0.5);
+        border-radius: 4px;
+      }
+
+      .output::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 191, 255, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 动态背景粒子 -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+      <div class="glass-card">
+        <div class="header">
+          <h1>🚀 Augment扩展配置助手</h1>
+          <p class="subtitle">快速生成专业的Chrome扩展配置文件</p>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-icon">📧</span>步骤1：配置Gmail邮箱</h3>
+          <div class="form-group">
+            <label for="gmailInput">你的Gmail邮箱地址：</label>
+            <div class="input-container">
+              <input
+                type="email"
+                id="gmailInput"
+                class="form-input"
+                placeholder="your-email@gmail.com"
+                required
+              />
+              <div class="validation-message" id="gmailValidation"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-icon">☁️</span>步骤2：配置云函数URL</h3>
+          <div class="form-group">
+            <label for="cloudFunctionInput">腾讯云函数URL：</label>
+            <div class="input-container">
+              <input
+                type="url"
+                id="cloudFunctionInput"
+                class="form-input"
+                placeholder="https://your-cloud-function-url.com/get_code"
+                required
+              />
+              <div class="validation-message" id="urlValidation"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="buttons">
+          <button
+            class="btn btn-primary"
+            id="generateBtn"
+            onclick="generateConfig()"
+          >
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            <span id="generateText">🎯 生成配置文件</span>
+          </button>
+          <button class="btn" id="copyBtn" onclick="copyConfig()" disabled>
+            📋 复制配置
+          </button>
+          <button
+            class="btn"
+            id="downloadBtn"
+            onclick="downloadConfig()"
+            disabled
+          >
+            💾 下载config.js
+          </button>
+        </div>
+
+        <div class="success-message" id="successMessage">
+          ✨ 配置文件生成成功！你可以复制内容或下载文件。
+        </div>
+
+        <div id="output" class="output"></div>
+
+        <div class="instructions">
+          <h3><span class="step-icon">📝</span>使用说明</h3>
+          <ol>
+            <li>填写你的Gmail邮箱地址和云函数URL</li>
+            <li>点击"生成配置文件"按钮</li>
+            <li>
+              复制生成的配置内容，保存为
+              <span class="code-highlight">config.js</span> 文件
+            </li>
+            <li>
+              将
+              <span class="code-highlight">config.js</span> 文件放在扩展根目录下
+            </li>
+            <li>重新加载Chrome扩展即可使用</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://lib.youware.com/youware-lib-editor.1754557047.js"
+      id="yourware-lib"
+    ></script>
+    <script>
+      let generatedConfig = "";
+
+      // 创建动态背景粒子
+      function createParticles() {
+        const particlesContainer = document.getElementById("particles");
+        const particleCount = 12; // 减少粒子数量
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+
+          const size = Math.random() * 50 + 20; // 减小粒子大小范围
+          const x = Math.random() * window.innerWidth;
+          const y = Math.random() * window.innerHeight;
+          const delay = Math.random() * 20;
+
+          particle.style.width = size + "px";
+          particle.style.height = size + "px";
+          particle.style.left = x + "px";
+          particle.style.top = y + "px";
+          particle.style.animationDelay = delay + "s";
+          particle.style.opacity = 0.1 + Math.random() * 0.1; // 降低透明度
+
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // 实时验证
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@gmail\.com$/;
+        return emailRegex.test(email);
+      }
+
+      function validateUrl(url) {
+        try {
+          const urlObj = new URL(url);
+          return urlObj.protocol === "https:" && url.length > 10;
+        } catch {
+          return false;
+        }
+      }
+
+      function showValidation(inputId, validationId, isValid, message) {
+        const input = document.getElementById(inputId);
+        const validation = document.getElementById(validationId);
+
+        input.classList.remove("valid", "invalid");
+        validation.classList.remove("show", "success", "error");
+
+        if (message) {
+          input.classList.add(isValid ? "valid" : "invalid");
+          validation.textContent = message;
+          validation.classList.add("show", isValid ? "success" : "error");
+        }
+      }
+
+      function updateProgress() {
+        const gmailValid = validateEmail(
+          document.getElementById("gmailInput").value
+        );
+        const urlValid = validateUrl(
+          document.getElementById("cloudFunctionInput").value
+        );
+
+        let progress = 0;
+        if (gmailValid) progress += 50;
+        if (urlValid) progress += 50;
+
+        document.getElementById("progressFill").style.width = progress + "%";
+
+        const generateBtn = document.getElementById("generateBtn");
+        generateBtn.disabled = progress < 100;
+
+        return progress === 100;
+      }
+
+      // 添加实时验证事件监听器
+      document
+        .getElementById("gmailInput")
+        .addEventListener("input", function () {
+          const email = this.value.trim();
+          if (email) {
+            const isValid = validateEmail(email);
+            showValidation(
+              "gmailInput",
+              "gmailValidation",
+              isValid,
+              isValid ? "✓ Gmail邮箱格式正确" : "✗ 请输入有效的Gmail邮箱地址"
+            );
+          } else {
+            showValidation("gmailInput", "gmailValidation", false, "");
+          }
+          updateProgress();
+        });
+
+      document
+        .getElementById("cloudFunctionInput")
+        .addEventListener("input", function () {
+          const url = this.value.trim();
+          if (url) {
+            const isValid = validateUrl(url);
+            showValidation(
+              "cloudFunctionInput",
+              "urlValidation",
+              isValid,
+              isValid ? "✓ URL格式正确" : "✗ 请输入有效的HTTPS URL"
+            );
+          } else {
+            showValidation("cloudFunctionInput", "urlValidation", false, "");
+          }
+          updateProgress();
+        });
+
+      function setLoading(isLoading) {
+        const generateBtn = document.getElementById("generateBtn");
+        const spinner = document.getElementById("loadingSpinner");
+        const text = document.getElementById("generateText");
+
+        if (isLoading) {
+          generateBtn.disabled = true;
+          spinner.style.display = "block";
+          text.textContent = "生成中...";
+        } else {
+          generateBtn.disabled = !updateProgress();
+          spinner.style.display = "none";
+          text.textContent = "🎯 生成配置文件";
+        }
+      }
+
+      function generateConfig() {
+        const gmail = document.getElementById("gmailInput").value.trim();
+        const cloudFunction = document
+          .getElementById("cloudFunctionInput")
+          .value.trim();
+
+        if (!validateEmail(gmail)) {
+          showValidation(
+            "gmailInput",
+            "gmailValidation",
+            false,
+            "✗ 请输入有效的Gmail邮箱地址"
+          );
+          return;
+        }
+
+        if (!validateUrl(cloudFunction)) {
+          showValidation(
+            "cloudFunctionInput",
+            "urlValidation",
+            false,
+            "✗ 请输入有效的HTTPS云函数URL"
+          );
+          return;
+        }
+
+        setLoading(true);
+
+        // 模拟生成过程
+        setTimeout(() => {
+          generatedConfig = `// Augment扩展配置文件
+// 请根据你的实际情况修改以下配置
+
+(() => {
+  "use strict";
+
+  // 配置对象
+  const CONFIG = {
+    // Gmail配置
+    gmail: {
+      // 你的Gmail邮箱地址（不包含+号后缀）
+      baseEmail: "${gmail}",
+      // 随机后缀长度
+      suffixLength: 5
+    },
+
+    // 云函数配置
+    cloudFunction: {
+      // 腾讯云函数URL - 用于获取Gmail验证码
+      url: "${cloudFunction}",
+      // 请求超时时间（毫秒）
+      timeout: 8000
+    },
+
+    // 临时邮箱配置
+    tempEmail: {
+      // Mail.tm API地址
+      apiUrl: "https://api.mail.tm",
+      // 用户名前缀
+      usernamePrefix: "augment",
+      // 密码前缀
+      passwordPrefix: "@!Pass",
+      // 请求超时时间（毫秒）
+      timeout: 6000
+    },
+
+    // 验证码配置
+    verificationCode: {
+      // 验证码长度范围
+      minLength: 4,
+      maxLength: 8,
+      // 验证码数值范围
+      minValue: 1000,
+      maxValue: 99999999
+    },
+
+    // 自动化配置
+    automation: {
+      // 邮箱生成倒计时（秒）
+      emailGenerationCountdown: 5,
+      // 验证码获取等待时间（秒）
+      codeWaitTime: 5,
+      // 各种操作的延迟时间（毫秒）
+      delays: {
+        afterEmailInput: 500,
+        afterCodeInput: 500,
+        betweenClicks: 200,
+        formSubmission: 1000
+      }
+    },
+
+    // 页面元素选择器
+    selectors: {
+      // 邮箱输入框
+      emailInput: 'input[name="username"]',
+      // 验证码输入框
+      codeInput: 'input[name="code"], input[id="code"]',
+      // 提交按钮
+      submitButton: 'button[type="submit"][name="action"]',
+      // 继续按钮的备用选择器
+      continueButton: 'button[type="submit"]'
+    },
+
+    // 调试配置
+    debug: {
+      // 是否启用调试模式
+      enabled: false,
+      // 是否显示详细日志
+      verbose: false
+    }
+  };
+
+  // 配置验证函数
+  const validateConfig = () => {
+    const errors = [];
+
+    // 验证Gmail配置
+    if (!CONFIG.gmail.baseEmail || !CONFIG.gmail.baseEmail.includes('@')) {
+      errors.push('Gmail邮箱地址配置无效');
+    }
+
+    // 验证云函数配置
+    if (!CONFIG.cloudFunction.url || !CONFIG.cloudFunction.url.startsWith('http')) {
+      errors.push('云函数URL配置无效');
+    }
+
+    // 验证临时邮箱配置
+    if (!CONFIG.tempEmail.apiUrl || !CONFIG.tempEmail.apiUrl.startsWith('http')) {
+      errors.push('临时邮箱API地址配置无效');
+    }
+
+    if (errors.length > 0) {
+      console.error('配置验证失败:', errors);
+      return false;
+    }
+
+    return true;
+  };
+
+  // 获取配置的便捷方法
+  const getConfig = (path) => {
+    const keys = path.split('.');
+    let value = CONFIG;
+    
+    for (const key of keys) {
+      if (value && typeof value === 'object' && key in value) {
+        value = value[key];
+      } else {
+        return undefined;
+      }
+    }
+    
+    return value;
+  };
+
+  // 生成Gmail别名邮箱
+  const generateGmailAlias = () => {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    let randomSuffix = "";
+    
+    for (let i = 0; i < CONFIG.gmail.suffixLength; i++) {
+      randomSuffix += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    const [localPart, domain] = CONFIG.gmail.baseEmail.split('@');
+    return \`\${localPart}+\${randomSuffix}@\${domain}\`;
+  };
+
+  // 导出到全局
+  window.AugmentConfig = {
+    CONFIG,
+    validateConfig,
+    getConfig,
+    generateGmailAlias
+  };
+
+  // 自动验证配置
+  if (CONFIG.debug.enabled) {
+    console.log('Augment配置已加载:', CONFIG);
+    validateConfig();
+  }
+})();`;
+
+          document.getElementById("output").textContent = generatedConfig;
+          document.getElementById("output").classList.add("show");
+          document.getElementById("successMessage").classList.add("show");
+
+          // 启用按钮
+          document.getElementById("copyBtn").disabled = false;
+          document.getElementById("downloadBtn").disabled = false;
+
+          setLoading(false);
+        }, 1500);
+      }
+
+      function copyConfig() {
+        if (!generatedConfig) {
+          alert("请先生成配置文件");
+          return;
+        }
+
+        navigator.clipboard
+          .writeText(generatedConfig)
+          .then(() => {
+            const copyBtn = document.getElementById("copyBtn");
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = "✓ 已复制";
+            copyBtn.style.background =
+              "linear-gradient(135deg, #4CAF50, #45a049)";
+            copyBtn.style.color = "white";
+
+            setTimeout(() => {
+              copyBtn.textContent = originalText;
+              copyBtn.style.background = "";
+              copyBtn.style.color = "";
+            }, 2000);
+          })
+          .catch(() => {
+            alert("复制失败，请手动复制");
+          });
+      }
+
+      function downloadConfig() {
+        if (!generatedConfig) {
+          alert("请先生成配置文件");
+          return;
+        }
+
+        const blob = new Blob([generatedConfig], {
+          type: "application/javascript",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "config.js";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        const downloadBtn = document.getElementById("downloadBtn");
+        const originalText = downloadBtn.textContent;
+        downloadBtn.textContent = "✓ 已下载";
+        downloadBtn.style.background =
+          "linear-gradient(135deg, #4CAF50, #45a049)";
+        downloadBtn.style.color = "white";
+
+        setTimeout(() => {
+          downloadBtn.textContent = originalText;
+          downloadBtn.style.background = "";
+          downloadBtn.style.color = "";
+        }, 2000);
+      }
+
+      // 初始化
+      document.addEventListener("DOMContentLoaded", function () {
+        createParticles();
+        updateProgress();
+      });
+
+      // 窗口大小改变时重新创建粒子
+      window.addEventListener("resize", function () {
+        document.getElementById("particles").innerHTML = "";
+        createParticles();
+      });
+    </script>
+  </body>
+</html>
