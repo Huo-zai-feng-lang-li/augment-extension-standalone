@@ -9,7 +9,7 @@
     // Gmail配置
     gmail: {
       // 你的Gmail邮箱地址（不包含+号后缀）
-      baseEmail: "zkaugment@gmail.com",
+      baseEmail: "",
       // 随机后缀长度
       suffixLength: 6,
     },
@@ -17,7 +17,7 @@
     // 云函数配置
     cloudFunction: {
       // 腾讯云函数URL - 用于获取Gmail验证码
-      url: "https://1374020289-cggtuxv2ih.ap-guangzhou.tencentscf.com/get_code",
+      url: "",
       // 请求超时时间（毫秒）
       timeout: 8000,
     },
